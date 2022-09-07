@@ -78,7 +78,6 @@ def hedge_bet(
     """
 
     """
-    A.
     LOCATES THE CORRECT MARKET ID
     """
     game = f"{home_team} v {away_team}"
@@ -126,8 +125,8 @@ def hedge_bet(
         print("---------------------------------------------------")
 
     """
-    PRINTS BACK AND LAY PRICES AS WELL AS AVAILABLE SIZE FOR THE GIVEN OUTCOME AND IF VERIFIED BY THE USER,
-    PLACES A MARKET ORDER TO LAY THE BET.
+    SECTION BELOW PRINTS BACK AND LAY PRICES AS WELL AS AVAILABLE SIZE FOR THE GIVEN OUTCOME (IF continuous_output == True) 
+    AND IF VERIFIED BY THE USER, PLACES A MARKET ORDER TO LAY THE BET.
     SHOULD BE OPTIMIZED BY BETTER UTILIZATION OF LIMIT ORDERS + LOOPS + TIME CONDITIONALS
     """
 
