@@ -2,7 +2,7 @@ import pandas as pd
 import betfairlightweight
 from betfairlightweight.filters import market_filter, price_data
 from datetime import datetime, date, timedelta
-# from betfair_lists import betfair_teams, betfair_markets, betfair_outcomes
+from betfair_lists import betfair_teams, betfair_market_types, betfair_outcome_types
 
 
 def lay_bet_calculator(stake, odds, lay_odds_betting_exchange, bet_type, fee=0.02) -> int:
@@ -66,18 +66,19 @@ def hedge_bet(
              to place the bet, returns None.
     :rtype: dict with keys "Status", "Order status", "BetID", "Average price matched", "Size matched", "Error codes"
     """
-    # assert home_team in betfair_teams, f"{home_team} is not in Betfair format, please check Betfair documentation or betfair_lists.betfair_teams"
-    # assert away_team in betfair_teams, f"{away_team} is not in Betfair format, please check Betfair documentation or betfair_lists.betfair_teams"
-    # assert market in betfair_markets, f"{market} is not in Betfair format, please check Betfair documentation or betfair_lists.betfair_markets"
-    # assert outcome in betfair_outcomes, f"{outcome} is not in Betfair format, please check Betfair documentation or betfair_lists.betfair_outcomes"
-    # assert bet_type in ["Qualifying bet", "Freebet",
-    #                     "Risk-free bet"], f'{bet_type} must be either "Qualifying bet", "Freebet" or "Risk-free bet"'
+    assert home_team in betfair_teams, f"{home_team} is not in Betfair format, please check Betfair documentation or betfair_lists.betfair_teams"
+    assert away_team in betfair_teams, f"{away_team} is not in Betfair format, please check Betfair documentation or betfair_lists.betfair_teams"
+    assert market in betfair_market_types, f"{market} is not in Betfair format, please check Betfair documentation or betfair_lists.betfair_markets"
+    assert outcome in betfair_outcome_types, f"{outcome} is not in Betfair format, please check Betfair documentation or betfair_lists.betfair_outcomes"
+    assert bet_type in ["Qualifying bet", "Freebet",
+                        "Risk-free bet"], f'{bet_type} must be either "Qualifying bet", "Freebet" or "Risk-free bet"'
 
     """
     DOCUMENTATION THROUGHOUT THE FUNCTION CODE
     """
 
     """
+    A.
     LOCATES THE CORRECT MARKET ID
     """
     game = f"{home_team} v {away_team}"
@@ -125,8 +126,8 @@ def hedge_bet(
         print("---------------------------------------------------")
 
     """
-    SECTION BELOW PRINTS BACK AND LAY PRICES AS WELL AS AVAILABLE SIZE FOR THE GIVEN OUTCOME (IF continuous_output == True) 
-    AND IF VERIFIED BY THE USER, PLACES A MARKET ORDER TO LAY THE BET.
+    PRINTS BACK AND LAY PRICES AS WELL AS AVAILABLE SIZE FOR THE GIVEN OUTCOME AND IF VERIFIED BY THE USER,
+    PLACES A MARKET ORDER TO LAY THE BET.
     SHOULD BE OPTIMIZED BY BETTER UTILIZATION OF LIMIT ORDERS + LOOPS + TIME CONDITIONALS
     """
 
