@@ -43,22 +43,27 @@ if list_bet_dicts:
     for bet_dict in list_bet_dicts:
         print(f"GAME: {bet_dict['Home']} v {bet_dict['Away']}")
         print("---------------------------------------------------")
-        hedge = hedge_bet(
-            betfair_client=trading,
-            home_team=bet_dict['Home'],
-            away_team=bet_dict['Away'],
-            market=bet_dict['Market'],
-            outcome=bet_dict['Outcome'],
-            bet_type=bet_dict['Bet type'],
-            stake=bet_dict['Stake'],
-            odds=bet_dict['Odds'],
-            date=datetime.strftime(bet_dict['Date'], "%Y-%m-%d"),
-            continuous_output=continuous_output,
-            verification=verification)
-        if hedge:
-            for key, val in hedge.items():
-                print(key + ":", val)
-            print("---------------------------------------------------")
+        try: 
+            hedge = hedge_bet(
+                betfair_client=trading,
+                home_team=bet_dict['Home'],
+                away_team=bet_dict['Away'],
+                market=bet_dict['Market'],
+                outcome=bet_dict['Outcome'],
+                bet_type=bet_dict['Bet type'],
+                stake=bet_dict['Stake'],
+                odds=bet_dict['Odds'],
+                date=datetime.strftime(bet_dict['Date'], "%Y-%m-%d"),
+                continuous_output=continuous_output,
+                verification=verification)
+            if hedge:
+                for key, val in hedge.items():
+                    print(key + ":", val)
+                print("---------------------------------------------------")
+        except Exception as e: 
+            print("There was a problem hedging the bet for this game, please check manually")
+            print(f"Error description: {type(e)} - {e}")
+            continue
 
     trading.logout()
     if trading.session_expired:
