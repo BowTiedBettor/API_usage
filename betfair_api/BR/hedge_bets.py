@@ -1,6 +1,7 @@
 import betfairlightweight
-from bonus_functions import hedge_bet
-from datetime import date
+from BR_functions import hedge_bet
+from datetime import datetime
+from pandas import ExcelFile
 
 """
 NOTE: THIS IS PURELY FOR EDUCATIONAL PURPOSES, NORMALLY YOUR SENSITIVE INFORMATION MUST BE ENCRYPTED AND
@@ -8,58 +9,61 @@ trading.login() USED INSTEAD OF trading.login.interactive()
 """
 
 """
-INPUT DATA/READ FROM EXCEL
+INPUT DATA + PARAMETERS
 """
 USERNAME = "FILL IN USERNAME/EMAIL LOGIN"
 PASSWORD = "FILL IN PASSWORD"
 APP_KEY = "FILL IN APP_KEY"
 locale = "FILL IN LOCALE"
-
-home_team = "Ajax"
-away_team = "Rangers"
-market = "Over/Under 2.5 Goals"
-outcome = "Under 2.5 Goals"
-bet_size = 50
-odds = 2.55
-bet_type = "Qualifying bet"
-date = date.today().isoformat()
-continuous_output = True
-verification = True
+continuous_output = False
+verification = False
 
 """
-RUN SCRIPT
+FEED THE PATH TO YOUR EXCEL FILE, THEN RUN THE SCRIPT.
+IT WILL LOOP THROUGH ALL THE BETS IN YOUR EXCEL_FILE, 
+HEDGING THEM ONE AT A TIME.
 """
-trading = betfairlightweight.APIClient(
-    username=USERNAME,
-    password=PASSWORD,
-    app_key=APP_KEY,
-    locale=locale)
+bet_sheet = ExcelFile("PATH_TO_EXCEL_FILE")
+df = bet_sheet.parse(bet_sheet.sheet_names[0])
+list_bet_dicts = df.to_dict(orient='records')
 
-trading.login_interactive()
-if not trading.session_expired:
-    print("---------------------------------------------------")
-    print("YOU ARE NOW LOGGED IN!")
-    print("---------------------------------------------------")
+if list_bet_dicts:
+    trading = betfairlightweight.APIClient(
+        username=USERNAME,
+        password=PASSWORD,
+        app_key=APP_KEY,
+        locale=locale)
 
-hedge = hedge_bet(
-    betfair_client=trading,
-    home_team=home_team,
-    away_team=away_team,
-    market=market,
-    outcome=outcome,
-    bet_type=bet_type,
-    stake=bet_size,
-    odds=odds,
-    date=date,
-    continuous_output=continuous_output,
-    verification=verification)
+    trading.login_interactive()
+    if not trading.session_expired:
+        print("---------------------------------------------------")
+        print("YOU ARE NOW LOGGED IN!")
+        print("---------------------------------------------------")
 
-if hedge:
-    for key, val in hedge.items():
-        print(key + ":", val)
-    print("---------------------------------------------------")
+    for bet_dict in list_bet_dicts:
+        print(f"GAME: {bet_dict['Home']} v {bet_dict['Away']}")
+        print("---------------------------------------------------")
+        hedge = hedge_bet(
+            betfair_client=trading,
+            home_team=bet_dict['Home'],
+            away_team=bet_dict['Away'],
+            market=bet_dict['Market'],
+            outcome=bet_dict['Outcome'],
+            bet_type=bet_dict['Bet type'],
+            stake=bet_dict['Stake'],
+            odds=bet_dict['Odds'],
+            date=datetime.strftime(bet_dict['Date'], "%Y-%m-%d"),
+            continuous_output=continuous_output,
+            verification=verification)
+        if hedge:
+            for key, val in hedge.items():
+                print(key + ":", val)
+            print("---------------------------------------------------")
 
-trading.logout()
-if trading.session_expired:
-    print("YOU ARE NOW LOGGED OUT!")
-    print("---------------------------------------------------")
+    trading.logout()
+    if trading.session_expired:
+        print("YOU ARE NOW LOGGED OUT!")
+        print("---------------------------------------------------")
+
+else:
+    print("No bets to hedge, the Excel sheet is empty!")
