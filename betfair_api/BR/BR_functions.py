@@ -78,7 +78,6 @@ def hedge_bet(
     """
 
     """
-    A.
     LOCATES THE CORRECT MARKET ID
     """
     game = f"{home_team} v {away_team}"
