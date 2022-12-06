@@ -62,7 +62,7 @@ if list_bet_dicts:
                 print("---------------------------------------------------")
         except Exception as e: 
             print("There was a problem hedging the bet for this game, please check manually")
-            print(f"Error description: {type(e)} - {e}")
+            print(f"Error description: {repr(e)}")
             continue
 
     trading.logout()
