@@ -1,4 +1,4 @@
-BowTiedBettor Betfair API Project 
+BowTiedBettor BR Betfair API Project 
 
 https://bowtiedbettor.substack.com
 
