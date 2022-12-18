@@ -2,6 +2,7 @@ import betfairlightweight
 from BR_functions import hedge_bet
 from datetime import datetime
 from pandas import ExcelFile
+from traceback import print_exc
 
 """
 NOTE: THIS IS PURELY FOR EDUCATIONAL PURPOSES, NORMALLY YOUR SENSITIVE INFORMATION MUST BE ENCRYPTED AND
@@ -62,7 +63,7 @@ if list_bet_dicts:
                 print("---------------------------------------------------")
         except Exception as e: 
             print("There was a problem hedging the bet for this game, please check manually")
-            print(f"Error description: {repr(e)}")
+            print_exc()
             continue
 
     trading.logout()
