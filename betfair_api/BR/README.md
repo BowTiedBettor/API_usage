@@ -1,4 +1,4 @@
-Hedges all your bonus rugging bets at once using the Betfair API
+Hedge all your bonus rugging bets at once using the Betfair API
 
 Fill in your bets in the Excel sheet and run the script
 
