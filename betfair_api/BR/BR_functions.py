@@ -4,7 +4,6 @@ from betfairlightweight.filters import market_filter, price_data
 from datetime import datetime, date, timedelta
 from betfair_lists import betfair_teams, betfair_market_types, betfair_outcome_types
 
-
 def lay_bet_calculator(stake, odds, lay_odds_betting_exchange, bet_type, fee=0.02) -> int:
     """
     Computes how much to lay to make sure the back bet is fully hedged
